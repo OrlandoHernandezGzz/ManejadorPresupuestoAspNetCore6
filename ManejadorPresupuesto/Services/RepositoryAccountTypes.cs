@@ -39,5 +39,15 @@ namespace ManejadorPresupuesto.Services
             }
         }
 
+        public async Task<IEnumerable<AccountType>> Get(int userId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            // Permite realizar un query de select y mapea el conjunto de resultados a un tipo en especifico.
+            return await connection.QueryAsync<AccountType>(@"SELECT * FROM TiposCuentas WHERE UsuarioId = @userId;", 
+                new { userId });
+
+        }
+
     }
 }

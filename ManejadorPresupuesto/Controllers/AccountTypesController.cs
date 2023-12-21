@@ -15,6 +15,13 @@ namespace ManejadorPresupuesto.Controllers
             this.repositoryAccountTypes = repositoryAccountTypes;
         }
 
+		public async Task<IActionResult> Index()
+		{
+			var userId = 1;
+			var accountTypes = await repositoryAccountTypes.Get(userId);
+			return View(accountTypes);
+		}
+
 		public IActionResult Create()
 		{
 			return View();
@@ -42,7 +49,7 @@ namespace ManejadorPresupuesto.Controllers
 
 			await repositoryAccountTypes.Create(accountType);
 
-			return View();
+			return RedirectToAction("Index");
 		}
 
 		[HttpGet]
