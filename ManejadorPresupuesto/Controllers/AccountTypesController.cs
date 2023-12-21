@@ -55,6 +55,36 @@ namespace ManejadorPresupuesto.Controllers
 		}
 
 		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var userId = userServices.GetUserId();
+			var accountType = await repositoryAccountTypes.GetById(id, userId);
+
+			if (accountType is null)
+			{
+				return RedirectToAction("NotFound", "Home");
+			}
+
+			return View(accountType);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(AccountType accountType)
+		{
+			var userId = userServices.GetUserId();
+
+			var accountTypeExist = await repositoryAccountTypes.GetById(accountType.Id, userId);
+
+			if (accountTypeExist is null)
+			{
+				return RedirectToAction("NotFound", "Home");
+			}
+
+            await repositoryAccountTypes.Update(accountType);
+			return RedirectToAction("Index");
+        }
+
+		[HttpGet]
 		public async Task<IActionResult> CheckIfTypeAccountExists(string Nombre)
 		{
 			var userId = userServices.GetUserId();

@@ -49,5 +49,21 @@ namespace ManejadorPresupuesto.Services
 
         }
 
+        public async Task Update(AccountType accountType)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            // Permite ejecutar un query que no va a retornar nada.
+            await connection.ExecuteAsync(@"UPDATE TiposCuentas SET Nombre = @Nombre WHERE Id = @Id", accountType);
+        }
+
+        public async Task<AccountType> GetById(int id, int userId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            return await connection.QueryFirstOrDefaultAsync<AccountType>(@"SELECT * FROM TiposCuentas WHERE Id = @Id 
+                                                AND UsuarioId = @userId", new {id, userId});
+        }
+
     }
 }
