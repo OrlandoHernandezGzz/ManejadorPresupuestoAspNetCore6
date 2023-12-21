@@ -28,5 +28,16 @@ namespace ManejadorPresupuesto.Services
             accountType.Id = id;
         }
 
+        public async Task<bool> Exist(string name, int userId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var exist = await connection.QueryFirstOrDefaultAsync<int>(@"SELECT 1 FROM TiposCuentas 
+                                                WHERE Nombre = @name AND UsuarioId = @userId;", new { name, userId });
+
+                return exist == 1;
+            }
+        }
+
     }
 }

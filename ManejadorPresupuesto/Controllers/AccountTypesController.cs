@@ -31,6 +31,15 @@ namespace ManejadorPresupuesto.Controllers
 
 			accountType.UsuarioId = 1;
 
+			var accountTypeExist = await repositoryAccountTypes.Exist(accountType.Nombre, accountType.UsuarioId);
+
+			if (accountTypeExist)
+			{
+				ModelState.AddModelError(nameof(accountType.Nombre), $"El nombre {accountType.Nombre} ya existe.");
+
+				return View(accountType);
+			}
+
 			await repositoryAccountTypes.Create(accountType);
 
 			return View();
