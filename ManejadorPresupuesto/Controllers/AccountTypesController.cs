@@ -9,15 +9,17 @@ namespace ManejadorPresupuesto.Controllers
 	public class AccountTypesController : Controller
 	{
         private readonly IRepositoryAccountTypes repositoryAccountTypes;
+        private readonly IUserServices userServices;
 
-        public AccountTypesController(IRepositoryAccountTypes repositoryAccountTypes)
+        public AccountTypesController(IRepositoryAccountTypes repositoryAccountTypes, IUserServices userServices)
 		{
             this.repositoryAccountTypes = repositoryAccountTypes;
+            this.userServices = userServices;
         }
 
 		public async Task<IActionResult> Index()
 		{
-			var userId = 1;
+			var userId = userServices.GetUserId();
 			var accountTypes = await repositoryAccountTypes.Get(userId);
 			return View(accountTypes);
 		}
@@ -36,7 +38,7 @@ namespace ManejadorPresupuesto.Controllers
 				return View(accountType);
 			}
 
-			accountType.UsuarioId = 1;
+			accountType.UsuarioId = userServices.GetUserId();
 
 			var accountTypeExist = await repositoryAccountTypes.Exist(accountType.Nombre, accountType.UsuarioId);
 
@@ -55,7 +57,7 @@ namespace ManejadorPresupuesto.Controllers
 		[HttpGet]
 		public async Task<IActionResult> CheckIfTypeAccountExists(string Nombre)
 		{
-			var userId = 1;
+			var userId = userServices.GetUserId();
 			var existAccountType = await repositoryAccountTypes.Exist(Nombre, userId);
 
 			if (existAccountType)
