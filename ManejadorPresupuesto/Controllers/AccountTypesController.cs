@@ -44,5 +44,20 @@ namespace ManejadorPresupuesto.Controllers
 
 			return View();
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> CheckIfTypeAccountExists(string Nombre)
+		{
+			var userId = 1;
+			var existAccountType = await repositoryAccountTypes.Exist(Nombre, userId);
+
+			if (existAccountType)
+			{
+				return Json($" El nombre {Nombre} ya existe");
+			}
+
+			return Json(true);
+		}
+
 	}
 }
