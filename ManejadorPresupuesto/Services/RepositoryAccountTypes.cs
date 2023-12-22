@@ -65,5 +65,12 @@ namespace ManejadorPresupuesto.Services
                                                 AND UsuarioId = @userId", new {id, userId});
         }
 
+        public async Task Delete(int id)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            await connection.ExecuteAsync("DELETE TiposCuentas WHERE Id = @Id", new { id });
+        }
+
     }
 }

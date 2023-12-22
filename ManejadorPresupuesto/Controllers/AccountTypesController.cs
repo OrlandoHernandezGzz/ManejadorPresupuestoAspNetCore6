@@ -68,6 +68,36 @@ namespace ManejadorPresupuesto.Controllers
 			return View(accountType);
 		}
 
+		public async Task<IActionResult> Delete(int id)
+		{
+			var userId = userServices.GetUserId();
+			var accountType = await repositoryAccountTypes.GetById(id, userId);
+
+			if (accountType is null)
+			{
+				return RedirectToAction("NotFound", "Home");
+			}
+
+			return View(accountType);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> DeleteAccountType(int id)
+		{
+			var userId = userServices.GetUserId();
+			var accountType = await repositoryAccountTypes.GetById(id, userId);
+
+			if (accountType is null)
+			{
+				return RedirectToAction("NotFound", "Home");
+			}
+
+			await repositoryAccountTypes.Delete(id);
+
+			return RedirectToAction("Index");
+
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Edit(AccountType accountType)
 		{
