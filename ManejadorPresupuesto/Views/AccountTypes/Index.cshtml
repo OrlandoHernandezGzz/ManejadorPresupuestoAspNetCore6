@@ -21,7 +21,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id="reorderable">
         @foreach (var accountType in Model)
         {
             <tr>
@@ -35,3 +35,12 @@
         }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+        $(function() {
+            $("#reorderable").sortable();
+        })
+    </script>
+}
